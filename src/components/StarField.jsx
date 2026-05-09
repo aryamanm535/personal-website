@@ -97,13 +97,12 @@ export default function StarField() {
         const alpha   = 0.6 * drawIn * fadeOut;
         if (alpha < 0.01) return;
 
-        // Start point: viewport pos that scrolls with SCROLL_FACTOR (same rate as stars)
+        // All points shift by the same scroll delta — keeps the constellation shape frozen
+        const delta  = (scrollY - line.scrollY) * SCROLL_FACTOR;
         const startX = line.x1;
-        const startY = line.y1 - (scrollY - line.scrollY) * SCROLL_FACTOR;
-
-        // End point: live position of the connected star (always tracks the actual star)
-        const endX = line.star.x;
-        const endY = ((line.star.y - scrollOff) % H + H) % H;
+        const startY = line.y1 - delta;
+        const endX   = line.x2;
+        const endY   = line.y2 - delta;
 
         const ex = startX + (endX - startX) * drawIn;
         const ey = startY + (endY - startY) * drawIn;
@@ -192,11 +191,11 @@ export default function StarField() {
         if (d < CONNECT_R && d > 8) nearby.push({ s, d });
       });
       nearby.sort((a, b) => a.d - b.d);
-      nearby.slice(0, MAX_CONNECT).forEach(({ s }) => {
+      nearby.slice(0, MAX_CONNECT).forEach(({ s, drawnY }) => {
         linesRef.current.push({
-          x1: vx, y1: vy,
-          scrollY,   // scroll position at click time
-          star: s,   // live reference — endpoint recomputed every frame
+          x1: vx,  y1: vy,
+          x2: s.x, y2: drawnY,  // frozen snapshot — whole shape shifts uniformly
+          scrollY,
           born,
         });
       });
