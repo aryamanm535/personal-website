@@ -188,7 +188,7 @@ export default function StarField() {
       stars.forEach(s => {
         const drawnY = ((s.y - scrollOff) % H + H) % H;
         const d = Math.hypot(s.x - vx, drawnY - vy);
-        if (d < CONNECT_R && d > 8) nearby.push({ s, d });
+        if (d < CONNECT_R && d > 8) nearby.push({ s, d, drawnY });
       });
       nearby.sort((a, b) => a.d - b.d);
       nearby.slice(0, MAX_CONNECT).forEach(({ s, drawnY }) => {

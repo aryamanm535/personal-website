@@ -237,21 +237,33 @@ html[data-theme="light"] .nebula-wrap { opacity: 0.35; }
 }
 @keyframes nebulaDrift1 {
   0%,100% { transform: translate(0,0) scale(1); }
-  50%      { transform: translate(5vw,-4vh) scale(1.08); }
+  50%      { transform: translate(4vw,-3vh) scale(1.07); }
 }
 @keyframes nebulaDrift2 {
   0%,100% { transform: translate(0,0) scale(1); }
-  33%      { transform: translate(-4vw,5vh) scale(0.93); }
-  66%      { transform: translate(3vw,-3vh) scale(1.05); }
+  40%      { transform: translate(-3vw,4vh) scale(0.94); }
+  80%      { transform: translate(2vw,-2vh) scale(1.04); }
 }
 @keyframes nebulaDrift3 {
   0%,100% { transform: translate(0,0) scale(1); }
-  50%      { transform: translate(-5vw,-4vh) scale(1.1); }
+  50%      { transform: translate(-4vw,-3vh) scale(1.09); }
 }
 @keyframes nebulaDrift4 {
   0%,100% { transform: translate(0,0) scale(1); }
-  40%      { transform: translate(4vw,3vh) scale(0.96); }
-  80%      { transform: translate(-2vw,2vh) scale(1.04); }
+  40%      { transform: translate(3vw,4vh) scale(0.95); }
+  80%      { transform: translate(-2vw,2vh) scale(1.05); }
+}
+@keyframes nebulaWing1 {
+  0%,100% { transform: rotate(-36deg) scale(1);    opacity: 1; }
+  50%      { transform: rotate(-28deg) scale(1.14); opacity: 0.85; }
+}
+@keyframes nebulaWing2 {
+  0%,100% { transform: rotate(36deg) scale(1);    opacity: 1; }
+  50%      { transform: rotate(28deg) scale(1.14); opacity: 0.85; }
+}
+@keyframes nebulaCore {
+  0%,100% { transform: scale(1);    opacity: 1; }
+  50%      { transform: scale(1.22); opacity: 0.78; }
 }
 
 /* ── Timeline ── */
