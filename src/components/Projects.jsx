@@ -9,7 +9,7 @@ const FEATURED = [
     tags: ['Next.js', 'TypeScript', 'Gemini API', 'Groq', 'Recharts', 'Yahoo Finance'],
     github: 'https://github.com/aryamanm535/hootAI',
     live: null,
-    emoji: '🦉',
+    img: '/icons/hoot.png',
     badge: 'Hackathon',
   },
   {
