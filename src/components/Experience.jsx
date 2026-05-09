@@ -50,7 +50,9 @@ const JOBS = [
   },
 ];
 
-// Container-relative position via offsetParent chain
+// Container-relative position via offsetParent chain.
+// The node uses translate(-50%,-50%) so offsetLeft/offsetTop (transform-unaware)
+// already equal the visual center — don't add half-dimensions on top.
 function offsetRelativeTo(el, container) {
   let x = 0, y = 0;
   let curr = el;
@@ -59,15 +61,15 @@ function offsetRelativeTo(el, container) {
     y += curr.offsetTop;
     curr = curr.offsetParent;
   }
-  return { x: x + el.offsetWidth / 2, y: y + el.offsetHeight / 2 };
+  return { x, y };
 }
 
-// Absolute page Y via offsetParent chain
+// Absolute page Y — same reasoning: offsetTop already is the visual center Y.
 function pageY(el) {
   let y = 0;
   let curr = el;
   while (curr) { y += curr.offsetTop; curr = curr.offsetParent; }
-  return y + el.offsetHeight / 2;
+  return y;
 }
 
 export default function Experience() {
