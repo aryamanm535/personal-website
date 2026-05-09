@@ -50,7 +50,7 @@ const JOBS = [
   },
 ];
 
-// Walk up offsetParent chain to get position relative to a container element
+// Container-relative position via offsetParent chain
 function offsetRelativeTo(el, container) {
   let x = 0, y = 0;
   let curr = el;
@@ -62,56 +62,83 @@ function offsetRelativeTo(el, container) {
   return { x: x + el.offsetWidth / 2, y: y + el.offsetHeight / 2 };
 }
 
+// Absolute page Y via offsetParent chain
+function pageY(el) {
+  let y = 0;
+  let curr = el;
+  while (curr) { y += curr.offsetTop; curr = curr.offsetParent; }
+  return y + el.offsetHeight / 2;
+}
+
 export default function Experience() {
   const containerRef  = useRef(null);
   const nodeRefs      = useRef([]);
   const headRevealRef = useReveal();
 
-  const [activeIdx,     setActiveIdx]     = useState(0);
+  // Each entry: { x, y } (container-relative) + absY (page-absolute)
   const [nodePositions, setNodePositions] = useState([]);
-  const [orbY,          setOrbY]          = useState(null);
+  // Float 0..N-1: how far through the timeline the viewport centre has scrolled
+  const [scrollProgress, setScrollProgress] = useState(0);
+  // Interpolated orb position in container-relative coords
+  const [orb, setOrb] = useState(null);
 
-  // Compute stable layout positions (doesn't depend on scroll)
   const computePositions = useCallback(() => {
     const container = containerRef.current;
     if (!container) return;
-    const positions = nodeRefs.current
-      .map(el => el ? offsetRelativeTo(el, container) : null)
-      .filter(Boolean);
+    const positions = nodeRefs.current.map(el => {
+      if (!el) return null;
+      const rel = offsetRelativeTo(el, container);
+      return { ...rel, absY: pageY(el) };
+    }).filter(Boolean);
     setNodePositions(positions);
   }, []);
 
   useEffect(() => {
-    // Slight delay to let reveal transforms settle
-    const t = setTimeout(computePositions, 120);
+    const t = setTimeout(computePositions, 150);
     window.addEventListener('resize', computePositions);
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener('resize', computePositions);
-    };
+    return () => { clearTimeout(t); window.removeEventListener('resize', computePositions); };
   }, [computePositions]);
 
-  // IntersectionObserver — activate nodes as they scroll into view
+  // Scroll-driven progress — runs every scroll tick
   useEffect(() => {
-    const observers = [];
-    nodeRefs.current.forEach((el, i) => {
-      if (!el) return;
-      const obs = new IntersectionObserver(
-        ([entry]) => {
-          if (entry.isIntersecting) setActiveIdx(prev => Math.max(prev, i));
-        },
-        { threshold: 0.5, rootMargin: '-5% 0px -38% 0px' }
-      );
-      obs.observe(el);
-      observers.push(obs);
-    });
-    return () => observers.forEach(o => o.disconnect());
-  }, []);
+    if (nodePositions.length === 0) return;
 
-  // Orb Y follows active node position
-  useEffect(() => {
-    if (nodePositions[activeIdx]) setOrbY(nodePositions[activeIdx].y);
-  }, [activeIdx, nodePositions]);
+    const update = () => {
+      const mid = window.scrollY + window.innerHeight * 0.50;
+      const absYs = nodePositions.map(p => p.absY);
+      const n = nodePositions.length;
+
+      let prog = 0;
+      if (mid <= absYs[0]) {
+        prog = 0;
+      } else if (mid >= absYs[n - 1]) {
+        prog = n - 1;
+      } else {
+        for (let i = 0; i < n - 1; i++) {
+          if (mid >= absYs[i] && mid < absYs[i + 1]) {
+            prog = i + (mid - absYs[i]) / (absYs[i + 1] - absYs[i]);
+            break;
+          }
+        }
+      }
+
+      setScrollProgress(prog);
+
+      // Interpolate orb between the two bracketing nodes
+      const lo = Math.min(Math.floor(prog), n - 2);
+      const t  = prog <= 0 ? 0 : prog >= n - 1 ? 1 : prog - lo;
+      const a  = nodePositions[lo];
+      const b  = nodePositions[Math.min(lo + 1, n - 1)];
+      setOrb({
+        x: a.x + t * (b.x - a.x),
+        y: a.y + t * (b.y - a.y),
+      });
+    };
+
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+    return () => window.removeEventListener('scroll', update);
+  }, [nodePositions]);
 
   return (
     <section id="experience" className="relative py-28 px-6" style={{ zIndex: 2 }}>
@@ -122,10 +149,8 @@ export default function Experience() {
         </div>
 
         <div className="relative" ref={containerRef}>
-          {/* Background rail */}
           <div className="timeline-rail hidden md:block" />
 
-          {/* SVG constellation lines — drawn between visited nodes */}
           {nodePositions.length > 1 && (
             <svg
               className="hidden md:block"
@@ -144,44 +169,49 @@ export default function Experience() {
                 </filter>
               </defs>
 
-              {nodePositions.slice(0, activeIdx).map((from, i) => {
-                const to  = nodePositions[i + 1];
-                if (!to) return null;
-                const len = Math.hypot(to.x - from.x, to.y - from.y);
+              {/* Lines — strokeDashoffset decreases as scrollProgress passes each segment */}
+              {nodePositions.slice(0, -1).map((from, i) => {
+                const to       = nodePositions[i + 1];
+                const len      = Math.hypot(to.x - from.x, to.y - from.y);
+                const fraction = Math.max(0, Math.min(1, scrollProgress - i));
+                if (fraction <= 0) return null;
                 return (
                   <line key={i}
                     x1={from.x} y1={from.y} x2={to.x} y2={to.y}
                     stroke="rgba(192,132,252,0.6)"
                     strokeWidth="1.2"
                     strokeDasharray={len}
-                    strokeDashoffset={len}
+                    strokeDashoffset={len * (1 - fraction)}
                     filter="url(#exp-glow)"
-                    style={{ animation: `drawLine 0.6s ease ${i * 0.1}s forwards` }}
                   />
                 );
               })}
 
-              {nodePositions.slice(0, activeIdx + 1).map((pos, i) => (
-                <circle key={i}
-                  cx={pos.x} cy={pos.y} r="3.5"
-                  fill="rgba(220,180,255,0.95)"
-                  filter="url(#exp-glow)"
-                  style={{ animation: `fadeInDot 0.3s ease ${i * 0.1}s both` }}
-                />
-              ))}
+              {/* Dots — fade in as orb approaches each node */}
+              {nodePositions.map((pos, i) => {
+                const alpha = Math.max(0, Math.min(1, (scrollProgress - i + 0.35) / 0.35));
+                if (alpha <= 0) return null;
+                return (
+                  <circle key={i}
+                    cx={pos.x} cy={pos.y} r="3.5"
+                    fill="rgba(220,180,255,0.95)"
+                    opacity={alpha}
+                    filter="url(#exp-glow)"
+                  />
+                );
+              })}
             </svg>
           )}
 
-          {/* Star orb — smoothly springs between active nodes */}
-          {orbY !== null && nodePositions[activeIdx] && (
+          {/* Star orb — directly scroll-driven, no CSS transition lag */}
+          {orb && (
             <div
               className="hidden md:block"
               style={{
                 position: 'absolute',
-                left: `${nodePositions[activeIdx].x}px`,
-                top: `${orbY}px`,
+                left: `${orb.x}px`,
+                top:  `${orb.y}px`,
                 transform: 'translate(-50%, -50%)',
-                transition: 'top 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), left 0.55s ease',
                 zIndex: 10,
                 pointerEvents: 'none',
               }}

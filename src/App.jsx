@@ -5,12 +5,10 @@ import Skills    from './components/Skills.jsx';
 import Experience from './components/Experience.jsx';
 import Projects  from './components/Projects.jsx';
 import Contact   from './components/Contact.jsx';
-import Cursor    from './components/Cursor.jsx';
 
 export default function App() {
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      <Cursor />
 
       {/* Fixed background layers */}
       <div className="bg-noise" />

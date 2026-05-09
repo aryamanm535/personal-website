@@ -65,10 +65,6 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Hide default cursor on pointer devices — replaced by Cursor.jsx */
-@media (pointer: fine) and (hover: hover) {
-  *, *::before, *::after { cursor: none !important; }
-}
 
 html[data-theme="light"] .nebula-wrap { opacity: 0.35; }
 
