@@ -105,7 +105,9 @@ export default function Experience() {
   useEffect(() => {
     if (nodePositions.length === 0) return;
 
-    const update = () => {
+    let rafPending = false;
+    const compute = () => {
+      rafPending = false;
       const mid = window.scrollY + window.innerHeight * 0.50;
       const absYs = nodePositions.map(p => p.absY);
       const n = nodePositions.length;
@@ -126,7 +128,6 @@ export default function Experience() {
 
       setScrollProgress(prog);
 
-      // Interpolate orb between the two bracketing nodes
       const lo = Math.min(Math.floor(prog), n - 2);
       const t  = prog <= 0 ? 0 : prog >= n - 1 ? 1 : prog - lo;
       const a  = nodePositions[lo];
@@ -137,8 +138,14 @@ export default function Experience() {
       });
     };
 
+    const update = () => {
+      if (rafPending) return;
+      rafPending = true;
+      requestAnimationFrame(compute);
+    };
+
     window.addEventListener('scroll', update, { passive: true });
-    update();
+    compute();
     return () => window.removeEventListener('scroll', update);
   }, [nodePositions]);
 

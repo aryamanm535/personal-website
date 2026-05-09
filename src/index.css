@@ -67,6 +67,8 @@ body {
 
 
 html[data-theme="light"] .nebula-wrap { opacity: 0.35; }
+/* Nebula blurs are too expensive on mobile GPUs — hide entirely */
+@media (max-width: 768px) { .nebula-wrap { display: none !important; } }
 
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; }

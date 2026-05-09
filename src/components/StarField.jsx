@@ -1,6 +1,7 @@
 import { useEffect, useRef, useCallback } from 'react';
 
 const NUM_STARS     = 200;
+const MOBILE_STARS  = 80;
 const LINE_FADE_MS  = 3500;
 const LINE_DRAW_MS  = 400;
 const CONNECT_R     = 140;
@@ -16,7 +17,9 @@ export default function StarField() {
   const tRef          = useRef(0);
 
   const seedStars = useCallback((w, h) => {
-    starsRef.current = Array.from({ length: NUM_STARS }, () => ({
+    const isMobile = window.matchMedia('(pointer: coarse)').matches;
+    const count = isMobile ? MOBILE_STARS : NUM_STARS;
+    starsRef.current = Array.from({ length: count }, () => ({
       x:         Math.random() * w,
       y:         Math.random() * h,
       r:         Math.random() * 1.4 + 0.4,
