@@ -259,24 +259,6 @@ html[data-theme="light"] .nebula-wrap { opacity: 0.35; }
   75%  { transform: translate(-6vw,-4vh) scale(1.20); }
   100% { transform: translate(0,0) scale(1); }
 }
-@keyframes nebulaWing1 {
-  0%   { transform: rotate(-36deg) scale(1);    opacity: 1; }
-  30%  { transform: rotate(-20deg) scale(1.30); opacity: 0.70; }
-  65%  { transform: rotate(-44deg) scale(0.78); opacity: 0.90; }
-  100% { transform: rotate(-36deg) scale(1);    opacity: 1; }
-}
-@keyframes nebulaWing2 {
-  0%   { transform: rotate(36deg) scale(1);    opacity: 1; }
-  35%  { transform: rotate(20deg) scale(1.30); opacity: 0.70; }
-  68%  { transform: rotate(48deg) scale(0.75); opacity: 0.88; }
-  100% { transform: rotate(36deg) scale(1);    opacity: 1; }
-}
-@keyframes nebulaCore {
-  0%   { transform: scale(1);    opacity: 1; }
-  35%  { transform: scale(1.45); opacity: 0.60; }
-  70%  { transform: scale(0.72); opacity: 0.95; }
-  100% { transform: scale(1);    opacity: 1; }
-}
 
 /* ── Timeline ── */
 .timeline-rail {

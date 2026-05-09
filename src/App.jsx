@@ -14,7 +14,7 @@ export default function App() {
       <div className="bg-noise" />
       <StarField />
 
-      {/* Butterfly Nebula */}
+      {/* Nebula */}
       <div
         style={{
           position: 'absolute', top: 0, left: 0,
@@ -23,64 +23,46 @@ export default function App() {
         }}
         className="nebula-wrap"
       >
-        {/* ── Outer diffuse haze ── */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'150vw', height:'85vh', left:'-25vw', top:'-5vh',
-          background:'rgba(35,10,110,0.12)', filter:'blur(130px)',
-          animation:'nebulaDrift1 14s ease-in-out infinite' }} />
-
-        {/* ── LEFT WING — indigo-blue main lobe ── */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'72vw', height:'28vh', left:'-18vw', top:'22vh',
-          background:'rgba(60,55,220,0.22)', filter:'blur(52px)',
-          transform:'rotate(-36deg)', transformOrigin:'right center',
-          animation:'nebulaWing1 9s ease-in-out infinite' }} />
-        {/* left wing inner bright (violet) */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'42vw', height:'17vh', left:'-2vw', top:'20vh',
-          background:'rgba(130,70,255,0.26)', filter:'blur(38px)',
-          transform:'rotate(-36deg)', transformOrigin:'right center',
-          animation:'nebulaWing1 7s ease-in-out infinite 1s' }} />
-        {/* left wingtip — cyan */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'26vw', height:'16vh', left:'-12vw', top:'5vh',
-          background:'rgba(30,170,230,0.20)', filter:'blur(32px)',
-          animation:'nebulaDrift3 8s ease-in-out infinite 0.5s' }} />
-
-        {/* ── RIGHT WING — teal-blue main lobe ── */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'72vw', height:'28vh', right:'-18vw', top:'22vh',
-          background:'rgba(18,100,200,0.20)', filter:'blur(52px)',
-          transform:'rotate(36deg)', transformOrigin:'left center',
-          animation:'nebulaWing2 11s ease-in-out infinite' }} />
-        {/* right wing inner bright (cyan-green) */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'42vw', height:'17vh', right:'-2vw', top:'20vh',
-          background:'rgba(10,190,160,0.20)', filter:'blur(38px)',
-          transform:'rotate(36deg)', transformOrigin:'left center',
-          animation:'nebulaWing2 8s ease-in-out infinite 1.5s' }} />
-        {/* right wingtip — emerald */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'26vw', height:'16vh', right:'-12vw', top:'5vh',
-          background:'rgba(10,170,100,0.17)', filter:'blur(32px)',
-          animation:'nebulaDrift2 9s ease-in-out infinite 1s' }} />
-
-        {/* ── CENTER CORE — pulsing bright purple-white ── */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'32vw', height:'26vh', left:'34vw', top:'22vh',
-          background:'rgba(210,110,255,0.32)', filter:'blur(42px)',
-          animation:'nebulaCore 5s ease-in-out infinite' }} />
-        <div style={{ position:'absolute', borderRadius:'50%', width:'16vw', height:'13vh', left:'42vw', top:'26vh',
-          background:'rgba(255,210,255,0.22)', filter:'blur(25px)',
-          animation:'nebulaCore 3.5s ease-in-out infinite 0.8s' }} />
-
-        {/* ── MAGENTA accent — left of core ── */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'22vw', height:'16vh', left:'18vw', top:'30vh',
-          background:'rgba(210,50,160,0.12)', filter:'blur(55px)',
-          animation:'nebulaDrift4 10s ease-in-out infinite 2s' }} />
-
-        {/* ── Lower lobes — fade into page ── */}
-        <div style={{ position:'absolute', borderRadius:'50%', width:'50vw', height:'28vh', left:'-6vw', top:'70vh',
-          background:'rgba(10,110,70,0.09)', filter:'blur(85px)',
-          animation:'nebulaDrift2 13s ease-in-out infinite 3s' }} />
-        <div style={{ position:'absolute', borderRadius:'50%', width:'44vw', height:'24vh', right:'0vw', top:'78vh',
-          background:'rgba(25,65,200,0.08)', filter:'blur(80px)',
-          animation:'nebulaDrift3 11s ease-in-out infinite 4s' }} />
-        <div style={{ position:'absolute', borderRadius:'50%', width:'60vw', height:'45vh', left:'20vw', top:'100vh',
-          background:'rgba(70,25,170,0.06)', filter:'blur(110px)',
-          animation:'nebulaDrift1 15s ease-in-out infinite 2s' }} />
+        {/* Large purple base — left */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'80vw', height:'72vh', left:'-12vw', top:'4vh',
+          background:'rgba(100,30,200,0.16)', filter:'blur(100px)',
+          animation:'nebulaDrift1 12s ease-in-out infinite' }} />
+        {/* Large indigo-blue — right */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'70vw', height:'65vh', right:'-8vw', top:'8vh',
+          background:'rgba(30,70,210,0.14)', filter:'blur(110px)',
+          animation:'nebulaDrift2 14s ease-in-out infinite 1s' }} />
+        {/* Teal-cyan — center left */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'48vw', height:'48vh', left:'4vw', top:'14vh',
+          background:'rgba(15,160,200,0.18)', filter:'blur(75px)',
+          animation:'nebulaDrift3 10s ease-in-out infinite 0.5s' }} />
+        {/* Emerald green — center right */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'42vw', height:'42vh', right:'8vw', top:'18vh',
+          background:'rgba(10,155,100,0.15)', filter:'blur(80px)',
+          animation:'nebulaDrift4 11s ease-in-out infinite 2s' }} />
+        {/* Bright violet — center */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'38vw', height:'36vh', left:'31vw', top:'16vh',
+          background:'rgba(170,60,240,0.20)', filter:'blur(65px)',
+          animation:'nebulaDrift2 9s ease-in-out infinite 0.8s' }} />
+        {/* Cyan accent — upper left */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'28vw', height:'28vh', left:'-4vw', top:'2vh',
+          background:'rgba(20,190,220,0.16)', filter:'blur(55px)',
+          animation:'nebulaDrift1 8s ease-in-out infinite 1.5s' }} />
+        {/* Magenta accent — upper right */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'26vw', height:'24vh', right:'2vw', top:'5vh',
+          background:'rgba(200,40,150,0.12)', filter:'blur(60px)',
+          animation:'nebulaDrift3 9s ease-in-out infinite 3s' }} />
+        {/* Deep blue-green — lower left */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'55vw', height:'32vh', left:'-8vw', top:'68vh',
+          background:'rgba(10,110,75,0.10)', filter:'blur(90px)',
+          animation:'nebulaDrift4 13s ease-in-out infinite 4s' }} />
+        {/* Blue — lower right */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'48vw', height:'28vh', right:'-4vw', top:'75vh',
+          background:'rgba(25,60,200,0.09)', filter:'blur(85px)',
+          animation:'nebulaDrift1 11s ease-in-out infinite 6s' }} />
+        {/* Purple fade — lower center */}
+        <div style={{ position:'absolute', borderRadius:'50%', width:'65vw', height:'50vh', left:'18vw', top:'100vh',
+          background:'rgba(80,20,170,0.07)', filter:'blur(115px)',
+          animation:'nebulaDrift2 15s ease-in-out infinite 3s' }} />
       </div>
 
       {/* Content */}
