@@ -1,31 +1,36 @@
 import StarField from './components/StarField.jsx';
-import Navbar from './components/Navbar.jsx';
-import Hero from './components/Hero.jsx';
-import Skills from './components/Skills.jsx';
+import Navbar    from './components/Navbar.jsx';
+import Hero      from './components/Hero.jsx';
+import Skills    from './components/Skills.jsx';
 import Experience from './components/Experience.jsx';
-import Projects from './components/Projects.jsx';
-import Contact from './components/Contact.jsx';
+import Projects  from './components/Projects.jsx';
+import Contact   from './components/Contact.jsx';
+import Cursor    from './components/Cursor.jsx';
 
 export default function App() {
   return (
     <div style={{ position: 'relative', minHeight: '100vh' }}>
-      {/* Background layers */}
+      <Cursor />
+
+      {/* Fixed background layers */}
       <div className="bg-noise" />
       <StarField />
 
-      {/* Ambient page-wide glow — fixed so it never cuts off */}
+      {/* Nebula — absolute so it scrolls away naturally past the hero */}
       <div
-        className="fixed pointer-events-none"
         style={{
-          inset: 0,
-          background: `
-            radial-gradient(ellipse 70% 55% at 15% 25%, rgba(147,51,234,0.22) 0%, transparent 70%),
-            radial-gradient(ellipse 55% 70% at 85% 75%, rgba(79,70,229,0.16) 0%, transparent 70%),
-            radial-gradient(ellipse 45% 40% at 60% 50%, rgba(168,85,247,0.11) 0%, transparent 65%)
-          `,
-          zIndex: 0,
+          position: 'absolute', top: 0, left: 0,
+          width: '100%', height: '210vh',
+          pointerEvents: 'none', zIndex: 0, overflow: 'hidden',
         }}
-      />
+        className="nebula-wrap"
+      >
+        <div style={{ position:'absolute', borderRadius:'50%', width:'85vw', height:'80vh', left:'-12vw', top:'2vh',  background:'rgba(147,51,234,0.18)', filter:'blur(90px)' }} />
+        <div style={{ position:'absolute', borderRadius:'50%', width:'65vw', height:'70vh', right:'-8vw', top:'18vh', background:'rgba(79,70,229,0.14)',  filter:'blur(100px)' }} />
+        <div style={{ position:'absolute', borderRadius:'50%', width:'45vw', height:'50vh', left:'28vw',  top:'38vh', background:'rgba(192,132,252,0.10)', filter:'blur(80px)' }} />
+        <div style={{ position:'absolute', borderRadius:'50%', width:'55vw', height:'55vh', left:'-5vw',  top:'90vh', background:'rgba(124,58,237,0.08)',  filter:'blur(100px)' }} />
+        <div style={{ position:'absolute', borderRadius:'50%', width:'40vw', height:'40vh', right:'5vw',  top:'130vh',background:'rgba(79,70,229,0.05)',   filter:'blur(90px)' }} />
+      </div>
 
       {/* Content */}
       <div style={{ position: 'relative', zIndex: 2 }}>

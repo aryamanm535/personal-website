@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, useCallback } from 'react';
 import { useReveal } from '../hooks/useReveal.js';
 
 const FEATURED = [
@@ -66,6 +66,36 @@ const MORE = [
   },
 ];
 
+const MAX_TILT = 8; // degrees
+
+function useTilt() {
+  const cardRef = useRef(null);
+  const [tilt, setTilt] = useState({ x: 0, y: 0, mx: 0, my: 0, active: false });
+
+  const onMouseMove = useCallback((e) => {
+    const el = cardRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    setTilt({
+      x: -dy * MAX_TILT,
+      y:  dx * MAX_TILT,
+      mx: e.clientX - rect.left,
+      my: e.clientY - rect.top,
+      active: true,
+    });
+  }, []);
+
+  const onMouseLeave = useCallback(() => {
+    setTilt({ x: 0, y: 0, mx: 0, my: 0, active: false });
+  }, []);
+
+  return { cardRef, tilt, onMouseMove, onMouseLeave };
+}
+
 export default function Projects() {
   const headRef = useReveal();
 
@@ -97,34 +127,45 @@ export default function Projects() {
 }
 
 function FeaturedCard({ project: p, delay }) {
-  const ref = useReveal(0.1);
-  const cardRef = useRef(null);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [hovered, setHovered] = useState(false);
-
-  const handleMouseMove = (e) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    setMouse({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
+  const revealRef = useReveal(0.1);
+  const { cardRef, tilt, onMouseMove, onMouseLeave } = useTilt();
 
   return (
     <div
-      ref={(el) => { ref.current = el; cardRef.current = el; }}
+      ref={(el) => { revealRef.current = el; cardRef.current = el; }}
       className="reveal group flex flex-col md:flex-row overflow-hidden"
       style={{
         transitionDelay: `${delay}s`,
         borderRadius: '12px',
         border: '1px solid var(--border)',
-        background: hovered
-          ? `radial-gradient(380px at ${mouse.x}px ${mouse.y}px, rgba(168,85,247,0.1), transparent 70%), var(--bg-card)`
+        background: tilt.active
+          ? `radial-gradient(380px at ${tilt.mx}px ${tilt.my}px, rgba(168,85,247,0.12), transparent 70%), var(--bg-card)`
           : 'var(--bg-card)',
-        transition: 'border-color 0.25s ease, background 0.15s ease, box-shadow 0.25s ease',
+        transform: tilt.active
+          ? `perspective(900px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.01)`
+          : 'perspective(900px) rotateX(0deg) rotateY(0deg) scale(1)',
+        transition: tilt.active
+          ? 'transform 0.08s linear, border-color 0.25s ease, background 0.15s ease, box-shadow 0.25s ease'
+          : 'transform 0.55s cubic-bezier(0.23,1,0.32,1), border-color 0.25s ease, background 0.15s ease, box-shadow 0.25s ease',
+        boxShadow: tilt.active
+          ? '0 20px 60px rgba(168,85,247,0.15), 0 8px 32px rgba(0,0,0,0.5)'
+          : '0 4px 16px rgba(0,0,0,0.3)',
+        willChange: 'transform',
       }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
     >
+      {/* Shine overlay */}
+      {tilt.active && (
+        <div
+          style={{
+            position: 'absolute', inset: 0, borderRadius: '12px',
+            background: `radial-gradient(180px at ${tilt.mx}px ${tilt.my}px, rgba(255,255,255,0.06), transparent 70%)`,
+            pointerEvents: 'none', zIndex: 1,
+          }}
+        />
+      )}
+
       {/* Image — full width on mobile, left column on desktop */}
       <div
         className="aspect-video md:aspect-auto md:w-[38%] md:flex-shrink-0 relative overflow-hidden"
@@ -160,7 +201,7 @@ function FeaturedCard({ project: p, delay }) {
       </div>
 
       {/* Content */}
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-6 flex flex-col flex-1" style={{ position: 'relative', zIndex: 2 }}>
         <div className="mb-3">
           <h3 className="font-bold text-lg leading-snug mb-0.5" style={{ color: 'var(--text-primary)' }}>
             {p.name}
@@ -210,35 +251,42 @@ function FeaturedCard({ project: p, delay }) {
 }
 
 function SmallCard({ project: p, delay }) {
-  const ref = useReveal(0.1);
-  const cardRef = useRef(null);
-  const [mouse, setMouse] = useState({ x: 0, y: 0 });
-  const [hovered, setHovered] = useState(false);
-
-  const handleMouseMove = (e) => {
-    const rect = cardRef.current?.getBoundingClientRect();
-    if (!rect) return;
-    setMouse({ x: e.clientX - rect.left, y: e.clientY - rect.top });
-  };
+  const revealRef = useReveal(0.1);
+  const { cardRef, tilt, onMouseMove, onMouseLeave } = useTilt();
 
   return (
     <div
-      ref={(el) => { ref.current = el; cardRef.current = el; }}
+      ref={(el) => { revealRef.current = el; cardRef.current = el; }}
       className="reveal p-5 flex flex-col gap-3 group cursor-default"
       style={{
         transitionDelay: `${delay}s`,
         borderRadius: '12px',
         border: '1px solid var(--border)',
-        background: hovered
-          ? `radial-gradient(280px at ${mouse.x}px ${mouse.y}px, rgba(168,85,247,0.12), transparent 70%), var(--bg-card)`
+        background: tilt.active
+          ? `radial-gradient(260px at ${tilt.mx}px ${tilt.my}px, rgba(168,85,247,0.13), transparent 70%), var(--bg-card)`
           : 'var(--bg-card)',
-        transition: 'border-color 0.25s ease, background 0.15s ease',
+        transform: tilt.active
+          ? `perspective(700px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) scale(1.02)`
+          : 'perspective(700px) rotateX(0deg) rotateY(0deg) scale(1)',
+        transition: tilt.active
+          ? 'transform 0.08s linear, border-color 0.25s ease, background 0.15s ease'
+          : 'transform 0.55s cubic-bezier(0.23,1,0.32,1), border-color 0.25s ease, background 0.15s ease',
+        boxShadow: tilt.active ? '0 16px 40px rgba(168,85,247,0.12), 0 4px 20px rgba(0,0,0,0.4)' : 'none',
+        willChange: 'transform',
+        position: 'relative',
       }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
     >
-      <div className="flex items-start justify-between gap-2">
+      {tilt.active && (
+        <div style={{
+          position: 'absolute', inset: 0, borderRadius: '12px',
+          background: `radial-gradient(140px at ${tilt.mx}px ${tilt.my}px, rgba(255,255,255,0.05), transparent 70%)`,
+          pointerEvents: 'none', zIndex: 1,
+        }} />
+      )}
+
+      <div className="flex items-start justify-between gap-2" style={{ position: 'relative', zIndex: 2 }}>
         <span className="text-2xl">{p.emoji}</span>
         {p.badge && (
           <span className="text-xs px-2 py-0.5 font-medium"
@@ -248,20 +296,20 @@ function SmallCard({ project: p, delay }) {
         )}
       </div>
 
-      <div>
+      <div style={{ position: 'relative', zIndex: 2 }}>
         <h4 className="font-bold text-sm mb-0.5" style={{ color: 'var(--text-primary)' }}>{p.name}</h4>
         <p className="text-xs font-semibold" style={{ color: 'var(--accent)' }}>{p.subtitle}</p>
       </div>
 
-      <p className="text-xs leading-relaxed flex-1" style={{ color: 'var(--text-muted)' }}>{p.desc}</p>
+      <p className="text-xs leading-relaxed flex-1" style={{ color: 'var(--text-muted)', position: 'relative', zIndex: 2 }}>{p.desc}</p>
 
-      <div className="flex flex-wrap gap-1.5">
+      <div className="flex flex-wrap gap-1.5" style={{ position: 'relative', zIndex: 2 }}>
         {p.tags.map(t => (
           <span key={t} className="tag" style={{ fontSize: '0.62rem', padding: '2px 6px' }}>{t}</span>
         ))}
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-4" style={{ position: 'relative', zIndex: 2 }}>
         {p.github && (
           <a
             href={p.github} target="_blank" rel="noreferrer"

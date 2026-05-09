@@ -65,6 +65,13 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Hide default cursor on pointer devices — replaced by Cursor.jsx */
+@media (pointer: fine) and (hover: hover) {
+  *, *::before, *::after { cursor: none !important; }
+}
+
+html[data-theme="light"] .nebula-wrap { opacity: 0.35; }
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
@@ -216,6 +223,21 @@ body {
 @keyframes blink {
   0%,100% { opacity: 1; }
   50%      { opacity: 0; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes drawLine {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes fadeInDot {
+  from { opacity: 0; transform: scale(0); }
+  to   { opacity: 1; transform: scale(1); }
 }
 
 /* ── Timeline ── */
