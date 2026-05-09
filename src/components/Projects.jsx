@@ -19,7 +19,7 @@ const FEATURED = [
     tags: ['Solidity', 'Node.js', 'React', 'MongoDB', 'Ethers.js', 'XDC'],
     github: 'https://github.com/aryamanm535/ValidNFT',
     live: null,
-    emoji: '🔗',
+    img: '/icons/validnft.png',
     badge: null,
   },
   {
@@ -203,7 +203,7 @@ function FeaturedCard({ project: p, delay }) {
       {/* Content */}
       <div className="p-6 flex flex-col flex-1" style={{ position: 'relative', zIndex: 2 }}>
         <div className="mb-3">
-          <h3 className="font-bold text-lg leading-snug mb-0.5" style={{ color: 'var(--text-primary)' }}>
+          <h3 className="font-bold text-lg leading-snug mb-0.5" style={{ color: p.img ? '#fff' : 'var(--text-primary)' }}>
             {p.name}
           </h3>
           <p className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>{p.subtitle}</p>
