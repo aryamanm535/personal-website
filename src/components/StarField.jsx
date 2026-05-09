@@ -9,10 +9,11 @@ const MAX_CONNECT   = 5;
 const SCROLL_FACTOR = 0.5;
 
 export default function StarField() {
-  const canvasRef = useRef(null);
-  const starsRef  = useRef([]);
-  const linesRef  = useRef([]);
-  const rafRef    = useRef(null);
+  const canvasRef     = useRef(null);
+  const starsRef      = useRef([]);
+  const linesRef      = useRef([]);
+  const clickStarsRef = useRef([]);
+  const rafRef        = useRef(null);
   const tRef          = useRef(0);
 
   const seedStars = useCallback((w, h) => {
@@ -128,6 +129,33 @@ export default function StarField() {
         });
       });
 
+      // ── Click-spawned stars ──
+      clickStarsRef.current = clickStarsRef.current.filter(
+        s => now - s.born < LINE_FADE_MS + 500
+      );
+
+      clickStarsRef.current.forEach(s => {
+        const age     = now - s.born;
+        const fadeOut = age > LINE_FADE_MS ? Math.max(0, 1 - (age - LINE_FADE_MS) / 500) : 1;
+        if (fadeOut < 0.01) return;
+
+        const drawY = s.y - (scrollY - s.scrollY) * SCROLL_FACTOR;
+
+        const grd = ctx.createRadialGradient(s.x, drawY, 0, s.x, drawY, 10);
+        grd.addColorStop(0,    `rgba(255,255,255,${fadeOut * 0.9})`);
+        grd.addColorStop(0.35, `rgba(192,132,252,${fadeOut * 0.6})`);
+        grd.addColorStop(1,    'rgba(168,85,247,0)');
+        ctx.fillStyle = grd;
+        ctx.beginPath();
+        ctx.arc(s.x, drawY, 10, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = `rgba(255,255,255,${fadeOut})`;
+        ctx.beginPath();
+        ctx.arc(s.x, drawY, 2.5, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
       rafRef.current = requestAnimationFrame(draw);
     };
 
@@ -154,7 +182,10 @@ export default function StarField() {
       const vy   = e.clientY;
       const born = Date.now();
 
-      // Find nearby background stars (frozen snapshot of their drawn position)
+      // Spawn glowing star at click position
+      clickStarsRef.current.push({ x: vx, y: vy, scrollY, born });
+
+      // Connect click star to nearby background stars
       const nearby = [];
       stars.forEach(s => {
         const drawnY = ((s.y - scrollOff) % H + H) % H;
@@ -162,27 +193,14 @@ export default function StarField() {
         if (d < CONNECT_R && d > 8) nearby.push({ s, d, drawnY });
       });
       nearby.sort((a, b) => a.d - b.d);
-      const selected = nearby.slice(0, MAX_CONNECT);
-      if (selected.length < 2) return;
-
-      // Sort by angle around click so consecutive stars are adjacent — looks constellation-like
-      selected.sort((a, b) =>
-        Math.atan2(a.drawnY - vy, a.s.x - vx) - Math.atan2(b.drawnY - vy, b.s.x - vx)
-      );
-
-      // Connect each star to the next (open chain); close into polygon if 3+ stars
-      const n = selected.length;
-      const limit = n >= 3 ? n : n - 1;
-      for (let i = 0; i < limit; i++) {
-        const from = selected[i];
-        const to   = selected[(i + 1) % n];
+      nearby.slice(0, MAX_CONNECT).forEach(({ s, drawnY }) => {
         linesRef.current.push({
-          x1: from.s.x, y1: from.drawnY,
-          x2: to.s.x,   y2: to.drawnY,
+          x1: vx,  y1: vy,
+          x2: s.x, y2: drawnY,
           scrollY,
           born,
         });
-      }
+      });
     };
 
     window.addEventListener('click', onClick, { capture: true });
