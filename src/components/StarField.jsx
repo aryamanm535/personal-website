@@ -100,12 +100,12 @@ export default function StarField() {
         const alpha   = 0.6 * drawIn * fadeOut;
         if (alpha < 0.01) return;
 
-        // All points shift by the same scroll delta — keeps the constellation shape frozen
         const delta  = (scrollY - line.scrollY) * SCROLL_FACTOR;
-        const startX = line.x1;
-        const startY = line.y1 - delta;
-        const endX   = line.x2;
-        const endY   = line.y2 - delta;
+        const startX = line.cx;
+        const startY = line.cy - delta;
+        // Live star position — recomputed each frame so the line tracks the actual star
+        const endX   = line.star.x;
+        const endY   = ((line.star.y - scrollOff) % H + H) % H;
 
         const ex = startX + (endX - startX) * drawIn;
         const ey = startY + (endY - startY) * drawIn;
@@ -178,18 +178,18 @@ export default function StarField() {
       // Spawn glowing star at click position
       clickStarsRef.current.push({ x: vx, y: vy, scrollY, born });
 
-      // Connect click star to nearby background stars
+      // Connect click star to nearby background stars via live refs
       const nearby = [];
       stars.forEach(s => {
         const drawnY = ((s.y - scrollOff) % H + H) % H;
         const d = Math.hypot(s.x - vx, drawnY - vy);
-        if (d < CONNECT_R && d > 8) nearby.push({ s, d, drawnY });
+        if (d < CONNECT_R && d > 8) nearby.push({ s, d });
       });
       nearby.sort((a, b) => a.d - b.d);
-      nearby.slice(0, MAX_CONNECT).forEach(({ s, drawnY }) => {
+      nearby.slice(0, MAX_CONNECT).forEach(({ s }) => {
         linesRef.current.push({
-          x1: vx,  y1: vy,
-          x2: s.x, y2: drawnY,
+          cx: vx, cy: vy,  // click origin
+          star: s,          // live ref — endpoint recomputed every frame
           scrollY,
           born,
         });
