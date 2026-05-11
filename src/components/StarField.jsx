@@ -120,13 +120,6 @@ export default function StarField() {
         ctx.lineTo(ex, ey);
         ctx.stroke();
         ctx.restore();
-
-        [{ x: startX, y: startY }, { x: ex, y: ey }].forEach(({ x, y }) => {
-          ctx.fillStyle = `rgba(220,180,255,${alpha})`;
-          ctx.beginPath();
-          ctx.arc(x, y, 2.2, 0, Math.PI * 2);
-          ctx.fill();
-        });
       });
 
       // ── Click-spawned stars ──
