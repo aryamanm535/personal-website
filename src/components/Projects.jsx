@@ -20,6 +20,7 @@ const FEATURED = [
     github: 'https://github.com/aryamanm535/ValidNFT',
     live: null,
     img: '/icons/validnft.png',
+    imgStyle: { objectFit: 'contain', padding: '1.25rem' },
     badge: null,
   },
   {
@@ -171,7 +172,7 @@ function FeaturedCard({ project: p, delay }) {
         style={{ background: 'linear-gradient(135deg, #1a0f2e 0%, #0e0a18 50%, #130c22 100%)', minHeight: '160px' }}
       >
         {p.img
-          ? <><img src={p.img} alt={p.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} /><div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(168,85,247,0.2) 0%, transparent 60%)' }} /></>
+          ? <><img src={p.img} alt={p.name} loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', ...p.imgStyle }} /><div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(168,85,247,0.2) 0%, transparent 60%)' }} /></>
           : (
             <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8, position: 'absolute', inset: 0 }}>
               <span style={{ fontSize: '2.8rem' }}>{p.emoji}</span>
