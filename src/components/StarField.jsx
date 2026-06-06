@@ -100,12 +100,12 @@ export default function StarField() {
         const alpha   = 0.6 * drawIn * fadeOut;
         if (alpha < 0.01) return;
 
+        // Both endpoints shift by the same delta so the line never stretches on scroll
         const delta  = (scrollY - line.scrollY) * SCROLL_FACTOR;
         const startX = line.cx;
         const startY = line.cy - delta;
-        // Live star position — recomputed each frame so the line tracks the actual star
-        const endX   = line.star.x;
-        const endY   = ((line.star.y - scrollOff) % H + H) % H;
+        const endX   = line.ex;
+        const endY   = line.ey - delta;
 
         const ex = startX + (endX - startX) * drawIn;
         const ey = startY + (endY - startY) * drawIn;
@@ -187,9 +187,10 @@ export default function StarField() {
       });
       nearby.sort((a, b) => a.d - b.d);
       nearby.slice(0, MAX_CONNECT).forEach(({ s }) => {
+        const drawnY = ((s.y - scrollOff) % H + H) % H;
         linesRef.current.push({
-          cx: vx, cy: vy,  // click origin
-          star: s,          // live ref — endpoint recomputed every frame
+          cx: vx, cy: vy,   // click origin (viewport coords at click time)
+          ex: s.x, ey: drawnY, // star endpoint (viewport coords at click time)
           scrollY,
           born,
         });
