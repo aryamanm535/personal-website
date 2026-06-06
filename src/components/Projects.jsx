@@ -30,6 +30,7 @@ const FEATURED = [
     tags: ['Node.js', 'React', 'Tailwind', 'JavaScript', 'SpotifyAPI'],
     github: 'https://github.com/aryamanm535/focus-bubble',
     live: "https://focus-bubble-henna.vercel.app/",
+    img: '/icons/focus.png',
     badge: 'Releasing Update Soon!',
   },
 ];
