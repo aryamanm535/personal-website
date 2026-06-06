@@ -96,7 +96,7 @@ const MORE = [
     desc: 'Tic-tac-toe with a minimax AI that cannot be beaten. Play, draw, or lose — winning is not an option.',
     tags: ['Java', 'Minimax', 'Game'],
     github: 'https://github.com/aryamanm535/impossible-tictactoe',
-    emoji: '❌',
+    emoji: '❌⭕',
   },
   {
     name: 'Hospital Manager',
@@ -112,7 +112,7 @@ const MORE = [
     desc: 'Terminal-style Wordle clone with a word bank, color-coded feedback, and six attempts to guess the hidden word.',
     tags: ['Java', 'Game'],
     github: 'https://github.com/aryamanm535/hangman',
-    emoji: '🟩',
+    emoji: '🟨🟩',
   },
 ];
 
