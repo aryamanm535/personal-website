@@ -6,7 +6,7 @@ const SKILLS = [
     icon: '</>',
     title: 'Languages',
     desc: 'From systems-level C to modern TypeScript.',
-    items: ['C / C++', 'Java', 'Python', 'JavaScript', 'TypeScript', 'Solidity', 'HTML / CSS'],
+    items: ['C / C++', 'C#', 'Java', 'Python', 'JavaScript', 'TypeScript', 'Solidity', 'HTML / CSS'],
   },
   {
     icon: '⚙',
