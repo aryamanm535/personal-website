@@ -107,20 +107,12 @@ const MORE = [
     emoji: '🏥',
   },
   {
-    name: 'Bingo Ticket Generator',
-    subtitle: 'Utility',
-    desc: 'Generates randomized, print-ready housie (bingo) tickets in bulk with guaranteed number distribution.',
-    tags: ['Java'],
-    github: 'https://github.com/aryamanm535/bingo-housie-ticket',
-    emoji: '🎱',
-  },
-  {
-    name: 'Hangman',
+    name: 'Wordle',
     subtitle: 'Java Game',
-    desc: 'Terminal-style hangman game with a word bank, lives tracker, and ASCII art gallows.',
+    desc: 'Terminal-style Wordle clone with a word bank, color-coded feedback, and six attempts to guess the hidden word.',
     tags: ['Java', 'Game'],
     github: 'https://github.com/aryamanm535/hangman',
-    emoji: '🪢',
+    emoji: '🟩',
   },
 ];
 
