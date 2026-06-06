@@ -2,9 +2,9 @@ import { useTypewriter } from '../hooks/useTypewriter.js';
 
 const ROLES = [
   'Software Engineer',
-  'ECE Junior @ UT Austin',
+  'ECE Rising Senior @ UT Austin',
   'Blockchain Developer',
-  'Incoming Dell SWE Intern',
+  'Dell SWE Intern',
   'Systems Builder',
 ];
 

@@ -4,12 +4,11 @@ import { useReveal } from '../hooks/useReveal.js';
 const JOBS = [
   {
     company: 'Dell Technologies',
-    role: 'SWE Intern — Global Operations',
+    role: 'SWE Intern — Global Test Engineering',
     period: 'May - Aug 2026',
     location: 'Austin, TX',
-    desc: 'Joining the Global Operations engineering team to build software that powers enterprise operations at scale.',
-    tags: ['Incoming'],
-    status: 'upcoming',
+    desc: 'Building an agentic testing solution in an MVC environment.',
+    tags: ['Current'],
     icon: '/icons/dell.png',
   },
   {
