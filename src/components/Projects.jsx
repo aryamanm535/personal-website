@@ -88,7 +88,7 @@ const MORE = [
     desc: 'Interactive simulation of the Monty Hall paradox using Java GUI. Run thousands of trials and watch the win rates converge.',
     tags: ['Java', 'Swing', 'Statistics'],
     github: 'https://github.com/aryamanm535/montyhallsimulation',
-    emoji: '🚪',
+    emoji: '🚪🚪🚪',
   },
   {
     name: 'Impossible Tic-Tac-Toe',
