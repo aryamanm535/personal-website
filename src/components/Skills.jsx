@@ -12,13 +12,13 @@ const SKILLS = [
     icon: '⚙',
     title: 'Frameworks & Libraries',
     desc: 'Full-stack apps, Web3, and AI pipelines.',
-    items: ['React', 'Next.js', 'Node.js', 'Express', 'Tailwind CSS', 'Ethers.js', 'LangChain'],
+    items: ['React', 'Next.js', 'Node.js', '.NET', 'Express', 'Tailwind CSS', 'Ethers.js', 'LangChain'],
   },
   {
     icon: '🛠',
     title: 'Tools & Platforms',
     desc: 'Ship with confidence, anywhere.',
-    items: ['Git', 'Docker', 'MongoDB', 'SQL', 'Firebase', 'ANSYS Fluent', 'SolidWorks', 'Linux'],
+    items: ['Git', 'Docker', 'MongoDB', 'SQL', 'Firebase', 'Jira', 'Regrello', 'Hadoop', 'Linux'],
   },
 ];
 

@@ -115,11 +115,39 @@ export function TechIcon({ name, size = 14 }) {
       </svg>
     ),
     'Linux': badge('LNX', '#1a1a1a', '#FFD133'),
-    'ANSYS Fluent': badge('ANS', '#FFB81C', '#000'),
-    'SolidWorks': badge('SW', '#E00', '#fff'),
     'Java': badge('JV', '#007396'),
     'C / C++': badge('C++', '#00599C'),
+    'C#': badge('C#', '#68217A'),
     'Express': badge('EX', '#111'),
+    '.NET': (
+      <svg width={s} height={s} viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="4" fill="#512BD4"/>
+        <text x="12" y="16" textAnchor="middle" fontSize="7" fontWeight="900"
+          fontFamily="Arial Black,Arial,sans-serif" fill="#fff">.NET</text>
+      </svg>
+    ),
+    'Jira': (
+      <svg width={s} height={s} viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="5" fill="#0052CC"/>
+        <path fill="#2684FF" d="M12 4l8 8-8 8V4z" opacity="0.4"/>
+        <text x="12" y="17" textAnchor="middle" fontSize="11" fontWeight="900"
+          fontFamily="Arial Black,Arial,sans-serif" fill="#fff">J</text>
+      </svg>
+    ),
+    'Regrello': (
+      <svg width={s} height={s} viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="4" fill="#1E3A5F"/>
+        <text x="12" y="17" textAnchor="middle" fontSize="9" fontWeight="900"
+          fontFamily="Arial Black,Arial,sans-serif" fill="#fff">RG</text>
+      </svg>
+    ),
+    'Hadoop': (
+      <svg width={s} height={s} viewBox="0 0 24 24">
+        <rect width="24" height="24" rx="4" fill="#F7B733"/>
+        <text x="12" y="17" textAnchor="middle" fontSize="8" fontWeight="900"
+          fontFamily="Arial Black,Arial,sans-serif" fill="#1a1a1a">HD</text>
+      </svg>
+    ),
   };
 
   const icon = icons[name];

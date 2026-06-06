@@ -4,7 +4,7 @@ import { useReveal } from '../hooks/useReveal.js';
 const JOBS = [
   {
     company: 'Dell Technologies',
-    role: 'SWE Intern — Global Test Engineering',
+    role: 'SWE Intern, Global Test Engineering',
     period: 'May - Aug 2026',
     location: 'Austin, TX',
     desc: 'Building an agentic testing solution in an MVC environment.',
@@ -13,7 +13,7 @@ const JOBS = [
   },
   {
     company: 'X Digital Capital Solutions',
-    role: 'Software Development Engineer',
+    role: 'SDE Intern',
     period: 'May - Aug 2025',
     location: 'Austin, TX',
     desc: 'Built ValidNFT — a full-stack NFT staking marketplace on the XDC network. Redesigned smart contract architecture to a per-collection model, cutting gas costs significantly.',
@@ -278,7 +278,13 @@ function JobCard({ job }) {
         style={{ background: 'linear-gradient(to bottom, transparent, var(--accent), transparent)' }}
       />
 
-      <div className="flex items-start gap-3 mb-3">
+      {/* Date / location — top right */}
+      <div style={{ position: 'absolute', top: '1.25rem', right: '1.25rem', textAlign: 'right' }}>
+        <p className="text-xs font-mono font-semibold" style={{ color: 'var(--accent-bright)', letterSpacing: '0.03em' }}>{job.period}</p>
+        <p className="text-xs mt-0.5" style={{ color: 'var(--text-muted)' }}>{job.location}</p>
+      </div>
+
+      <div className="flex items-start gap-3 mb-3" style={{ paddingRight: '7rem' }}>
         <div className="flex-shrink-0 rounded-lg overflow-hidden" style={{
           width: 40, height: 40,
           background: 'rgba(168,85,247,0.08)',
@@ -300,13 +306,7 @@ function JobCard({ job }) {
               </span>
             )}
           </div>
-          <div className="flex items-center gap-2 mt-0.5 flex-wrap">
-            <p className="text-sm font-semibold" style={{ color: 'var(--accent)' }}>{job.company}</p>
-            <span style={{ color: 'var(--text-dim)', fontSize: '0.7rem' }}>·</span>
-            <p className="text-xs font-mono" style={{ color: 'var(--text-muted)' }}>{job.period}</p>
-            <span style={{ color: 'var(--text-dim)', fontSize: '0.7rem' }}>·</span>
-            <p className="text-xs" style={{ color: 'var(--text-muted)' }}>{job.location}</p>
-          </div>
+          <p className="text-sm font-semibold mt-0.5" style={{ color: 'var(--accent)' }}>{job.company}</p>
         </div>
       </div>
 
