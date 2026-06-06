@@ -31,6 +31,7 @@ const FEATURED = [
     github: 'https://github.com/aryamanm535/focus-bubble',
     live: "https://focus-bubble-henna.vercel.app/",
     img: '/icons/focus.png',
+    imgStyle: { objectFit: 'contain', padding: '1rem' },
     badge: 'Releasing Update Soon!',
   },
 ];
